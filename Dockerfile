@@ -36,7 +36,7 @@ USER postgres
 #
 RUN /etc/init.d/postgresql start \
     && psql --command "CREATE USER rolltime WITH SUPERUSER PASSWORD 'rolltime';" \
-    && createdb -O docker docker
+    && createdb -O rolltime rolltime
 
 #
 # Allow remote connections.
