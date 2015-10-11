@@ -41,6 +41,7 @@ RUN /etc/init.d/postgresql start \
 #
 # Allow remote connections.
 #
+USER root
 RUN \
   echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.conf \
   && echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
@@ -51,9 +52,11 @@ EXPOSE 5432
 # Volumes for configuration files, logs,
 # and databases to be mapped to host.
 #
+RUN mkdir -p /var/run/postgresql && chown -R postgres /var/run/postgresql
 VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 
 #
 # Starts database.
 #
+USER postgres
 CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]
